@@ -1,4 +1,6 @@
 <div>
+  
+  
   <h1 align="center"><a href="https://epicreact.dev/advanced-hooks">🔥 Advanced React Hooks 🚀 EpicReact.Dev</a></h1>
   <strong>
     Learn the more advanced React hooks and different patterns to enable great
@@ -20,7 +22,8 @@
 </div>
 
 <hr />
-
+NOTE: _I completed all the exercises of [kentcdodds/advanced-react-hooks][https://github.com/kentcdodds/advanced-react-hooks/], and this is the repository_
+<hr />
 <!-- prettier-ignore-start -->
 [![Build Status][build-badge]][build]
 [![All Contributors][all-contributors-badge]](#contributors)
