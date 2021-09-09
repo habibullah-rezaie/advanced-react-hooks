@@ -11,15 +11,15 @@ import {
 } from '../pokemon'
 
 function PokemonInfo({pokemonName}) {
-  const [state] = useAsync(
-    () => {
-      if (!pokemonName) return
+  const asyncCallback = React.useCallback(() => {
+    if (!pokemonName) return
 
-      return fetchPokemon(pokemonName)
-    },
-    {status: pokemonName ? 'pending' : 'idle'},
-    [pokemonName],
-  )
+    return fetchPokemon(pokemonName)
+  }, [pokemonName])
+
+  const state = useAsync(asyncCallback, {
+    status: pokemonName ? 'pending' : 'idle',
+  })
 
   const {data, status, error} = state
 
@@ -96,7 +96,7 @@ function asyncReducer(state, action) {
   }
 }
 
-function useAsync(asyncCallback, initialState, depsArray) {
+function useAsync(asyncCallback, initialState) {
   const [state, dispatch] = React.useReducer(asyncReducer, {
     status: 'idle',
     data: null,
@@ -120,11 +120,9 @@ function useAsync(asyncCallback, initialState, depsArray) {
         dispatch({type: 'rejected', error})
       },
     )
+  }, [asyncCallback])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...depsArray])
-
-  return [state, dispatch]
+  return state
 }
 
 export default AppWithUnmountCheckbox
