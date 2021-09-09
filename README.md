@@ -24,6 +24,7 @@
 <hr />
 NOTE: _I completed all the exercises of [kentcdodds/advanced-react-hooks][https://github.com/kentcdodds/advanced-react-hooks/], and this is the repository_
 <hr />
+
 <!-- prettier-ignore-start -->
 [![Build Status][build-badge]][build]
 [![All Contributors][all-contributors-badge]](#contributors)
