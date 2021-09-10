@@ -78,6 +78,8 @@ function AppWithUnmountCheckbox() {
   )
 }
 
+export default AppWithUnmountCheckbox
+
 function asyncReducer(state, action) {
   switch (action.type) {
     case 'pending': {
@@ -96,26 +98,53 @@ function asyncReducer(state, action) {
 }
 
 function useAsync(initialState) {
-  const [state, dispatch] = React.useReducer(asyncReducer, {
+  const [state, unsafeDispatch] = React.useReducer(asyncReducer, {
     status: 'idle',
     data: null,
     error: null,
     ...initialState,
   })
 
-  const run = React.useCallback(promise => {
-    dispatch({type: 'pending'})
-    promise.then(
-      data => {
-        dispatch({type: 'resolved', data})
-      },
-      error => {
-        dispatch({type: 'rejected', error})
-      },
-    )
-  }, [])
+  const dispatch = useSafeDispatch(unsafeDispatch)
+
+  const run = React.useCallback(
+    promise => {
+      dispatch({type: 'pending'})
+      promise.then(
+        data => {
+          dispatch({type: 'resolved', data})
+        },
+        error => {
+          dispatch({type: 'rejected', error})
+        },
+      )
+    },
+    [dispatch],
+  )
+
+  // // when ref changes
+  // React.useEffect(() => {}, [])
 
   return [state, run]
 }
 
-export default AppWithUnmountCheckbox
+function useSafeDispatch(unsafeDispatch) {
+  const compRef = React.useRef(null)
+
+  const dispatch = React.useCallback(
+    (...args) => {
+      if (compRef.current) {
+        unsafeDispatch(...args)
+      }
+    },
+    [unsafeDispatch, compRef],
+  )
+
+  React.useLayoutEffect(() => {
+    compRef.current = true
+
+    return () => (compRef.current = false)
+  }, [])
+  
+  return dispatch
+}
