@@ -7,7 +7,7 @@ import * as React from 'react'
 const countContext = React.createContext()
 
 function CountProvider({children}) {
-  const [count, setCount] = React.useState()
+  const [count, setCount] = React.useState(0)
   return (
     <countContext.Provider value={[count, setCount]}>
       {children}
