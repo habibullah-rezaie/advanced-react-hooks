@@ -40,7 +40,11 @@ function App() {
 export default App
 
 function useCount() {
-  const [count, setCount] = React.useContext(countContext)
+  const context = React.useContext(countContext)
 
-  return [count, setCount]
+  if (!context) {
+    throw new Error('useCount must be used within CountContext.Provider')
+  }
+
+  return context
 }
