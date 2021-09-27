@@ -6,7 +6,9 @@ import * as React from 'react'
 function useMedia(query, initialState = false) {
   const [state, setState] = React.useState(initialState)
 
-  React.useDebugValue(`\`${query}\` => ${state}`)
+  const getFormatedDebuhgValue = ({query, state}) => `\`${query}\` => ${state}`
+
+  React.useDebugValue({query, state}, getFormatedDebuhgValue)
 
   React.useEffect(() => {
     let mounted = true
